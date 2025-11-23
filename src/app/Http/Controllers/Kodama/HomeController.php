@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Kodama;
 
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class TopController extends Controller
+class HomeController extends Controller
 {
     public function index(): Response
     {
