@@ -78,7 +78,7 @@ export const KodamaHome = React.memo(function KodamaHome() {
 const Card = ({ title, body }: { title: string, body: string }) => (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-        <p className="mt-2 text-sm text-gray-600 leading-relaxed">{body}</p>
+        <p className="mt-2 text-sm leading-relaxed text-gray-600">{body}</p>
     </div>
 )
 
