@@ -8,6 +8,11 @@ use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\PasswordController;
+use App\Http\Controllers\Web\TopController;
+use App\Http\Controllers\Kodama\AuthController as KodamaAuthController;
+use App\Http\Controllers\Kodama\GardenController as KodamaGardenController;
+use App\Http\Controllers\Kodama\HomeController as KodamaHomeController;
+use App\Http\Controllers\Kodama\SeedController as KodamaSeedController;
 use App\Http\Middleware\VerifyCsrfToken;
 
 /*
@@ -22,6 +27,7 @@ use App\Http\Middleware\VerifyCsrfToken;
 */
 
 Route::group(['middleware' => 'basicauth'], function () {
+    Route::get('/', [TopController::class, 'index'])->name('web.top');
     Route::fallback(function () {
         return redirect(route('web.top'));
     });
@@ -32,6 +38,9 @@ Route::group(['middleware' => 'basicauth'], function () {
     });
     Route::get('login', [LoginController::class, 'create'])->name('user.login');
     Route::post('login', [LoginController::class, 'store']);
+    Route::post('kodama/auth/mock', [KodamaAuthController::class, 'mock'])->name('kodama.auth.mock');
+    Route::get('kodama', [KodamaHomeController::class, 'index'])->name('kodama.home');
+    Route::get('seed', [KodamaSeedController::class, 'show'])->name('kodama.seed.show');
 
 
     //管理画面側
@@ -54,4 +63,11 @@ Route::group(['middleware' => 'basicauth'], function () {
     // API
     Route::post('/api/upload', [ImageController::class, 'upload'])->withoutMiddleware(VerifyCsrfToken::class)->name('upload');
     Route::post('/api/upload/ma', [ImageController::class, 'maUpload'])->withoutMiddleware(VerifyCsrfToken::class)->name('upload.ma');
+    Route::middleware('auth')->group(function () {
+        Route::get('kodama/garden', [KodamaGardenController::class, 'index'])->name('kodama.garden');
+        Route::get('/api/garden', [KodamaGardenController::class, 'list'])->name('kodama.api.garden');
+        Route::post('/api/garden/seed/place', [KodamaGardenController::class, 'place'])->withoutMiddleware(VerifyCsrfToken::class)->name('kodama.api.garden.place');
+
+        Route::post('/api/seed/claim', [KodamaSeedController::class, 'claim'])->withoutMiddleware(VerifyCsrfToken::class)->name('kodama.api.seed.claim');
+    });
 });

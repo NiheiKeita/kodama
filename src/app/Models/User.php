@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
@@ -22,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'tel',
+        'google_uid',
+        'avatar_url',
         'password_token',
     ];
 
@@ -44,6 +47,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function userSeeds(): HasMany
+    {
+        return $this->hasMany(UserSeed::class);
+    }
 
     protected static function boot()
     {
